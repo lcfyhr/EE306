@@ -1,0 +1,18 @@
+0011000000000000; start at line x3000
+1010 000 000001100; load the encrypted text from x4000 by offset fill into R0 (LDI)
+1010 111 000001100; load the pointer address from x4001 into R7 (LDI)
+0110 001 111 000000; load from pointer (R7) the decryption key into R1 (LDR)
+; to decrypt the text (XOR in 8 steps)
+0101 010 000 000 001; (Step 1) R0 AND R1 into R2
+1001 010 010 111111; (Step 2) NOT R2 into R2 
+0101 011 000 000 010; (Step 3) R0 AND R2 into R3
+1001 011 011 111111; (Step 4) NOT R3 into R3
+0101 100 001 000 010; (Step 5) R1 AND R2 into R4
+1001 100 100 111111; (Step 6) NOT R4 into R4
+0101 101 011 000 100; (Step 7) R3 AND R4 into R5
+1001 101 101 111111; (Step 8) NOT R5 into R5
+1011 101 000000011; store decrypted text (R5) into x6000 (STR)
+1111000000100101; end the program
+0100 0000 0000 0000; fill line with x4000
+0100 0000 0000 0001; fill line with x4001
+0110 0000 0000 0000; fill line with x6000
